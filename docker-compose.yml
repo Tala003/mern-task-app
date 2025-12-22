@@ -1,0 +1,30 @@
+services:
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+
+  auth-service:
+    build: ./services/auth-service
+    ports:
+      - "4000:4000"
+    depends_on:
+      - mongo
+
+  task-service:
+    build: ./services/task-service
+    ports:
+      - "4001:4001"
+    depends_on:
+      - mongo
+      - notification-service
+
+  notification-service:
+    build: ./services/notification-service
+    ports:
+      - "5000:5000"
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
